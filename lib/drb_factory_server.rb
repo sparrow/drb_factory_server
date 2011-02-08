@@ -1,9 +1,11 @@
 if Rails.env.test?
+  
   require 'drb'
 
   module DRbFactory
 
-    class DRbActiveRecordInstanceFactory
+    class DRbActiveRecordFactory
+      
       @@port = 9000
 
       def self.port=(port)
@@ -16,16 +18,19 @@ if Rails.env.test?
         port
       end
 
+      def self.start_service
+        DRb.start_service("druby://localhost:#{DRbActiveRecordFactory.get_new_port}", DRbActiveRecordFactory.new)
+      end
+
       def get_port_for_factory(factory_name)
-        port = DRbActiveRecordInstanceFactory.get_new_port
+        port = DRbActiveRecordFactory.get_new_port
         inst = Factory.create(factory_name)
         DRb.start_service("druby://localhost:#{port}", inst)
         port
       end
-
+      
     end
-
-    DRbActiveRecordInstanceFactory.port = YAML.load_file(Rails.root.join('config', 'drb_factory.yml'))['port'] if File::exists?(Rails.root.join('config', 'drb_factory.yml'))
-    DRb.start_service("druby://localhost:#{DRbActiveRecordInstanceFactory.get_new_port}", DRbActiveRecordInstanceFactory.new)
+    
   end
+  
 end

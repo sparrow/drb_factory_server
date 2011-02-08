@@ -1,1 +1,2 @@
-require 'drb_server'
+DRbFactory::DRbActiveRecordFactory.port = YAML.load_file(Rails.root.join('config', 'drb_factory.yml'))['port'] if File::exists?(Rails.root.join('config', 'drb_factory.yml'))
+DRbFactory::DRbActiveRecordFactory.start_service
