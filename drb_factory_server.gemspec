@@ -5,6 +5,6 @@ Gem::Specification.new do |s|
   s.email = 'sparrowpublic@gmail.com'
   s.summary = 'Remote factory server for ActiveResource'
 
-  s.files = Dir['lib/**/*']
   s.require_path = 'lib'
+  s.files = Dir.glob('{lib,rails}/**/*') + %w(drb_factory_server.gemspec README)
 end
