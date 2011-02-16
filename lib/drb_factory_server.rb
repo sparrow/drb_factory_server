@@ -22,9 +22,9 @@ if Rails.env.test?
         DRb.start_service("druby://localhost:#{DRbActiveRecordFactory.get_new_port}", DRbActiveRecordFactory.new)
       end
 
-      def get_port_for_factory(factory_name)
+      def get_port_for_factory(factory_name, params = {})
         port = DRbActiveRecordFactory.get_new_port
-        inst = Factory.create(factory_name)
+        inst = Factory.create(factory_name, params)
         DRb.start_service("druby://localhost:#{port}", inst)
         port
       end
